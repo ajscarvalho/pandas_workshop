@@ -1,0 +1,29 @@
+
+# setup (debian) - install latest python (3.6), pip3 and virtalenv
+sudo apt-get install python3 python3.6 python3-pip
+sudo pip3 install --upgrade pip
+sudo pip3 install virtualenv
+
+# create a project and an environment (paths are up to you)
+cd <project_dir>
+mkdir <env>
+virtualenv -p /usr/bin/python3.6 <env>
+source <env>/bin/activate
+
+# in your environment
+# now packages you install will be just for this environment
+# also pip and python will refer to the version you declared 
+pip -V
+
+# lets install and run python notebooks
+pip install jupyter
+mkdir notebooks
+jupyter notebook --port 9999 --notebook-dir=notebooks [--no-browser]
+
+# create a new python 3 notebook
+# experiment a bit running some python commands
+# give a name to the notebook
+# save it
+# create cells with different variables
+# cells can be run in any order, but usually executed in sequence
+
