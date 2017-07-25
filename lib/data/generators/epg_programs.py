@@ -47,11 +47,11 @@ class ProgramsGenerator(BaseGenerator):
         seriesSeason    = self.choose_series_season(progType)
         seriesEpisode   = self.choose_series_episode(progType)
         
-        return '{},{},{},{},{},{},{},{},{},{},{},{}'.format(
+        return '{:s},{:s},{:s},{:s},{:s},{:s},{:s},{:2.2f},{:s},{:s},{:s},{:s},{:s}'.format(
             progId, 
             progType[0], 
             progType[1], 
-            progName, 
+            progName.title(), 
             '*'.join(progGenre), 
             '*'.join(progActors), 
             '*'.join(progDirectors),
@@ -84,9 +84,10 @@ class ProgramsGenerator(BaseGenerator):
             avgSeriesEpisodes = self.size * self.seriesRatio
             avgSeries = avgSeriesEpisodes / self.episodesPerSeriesAvg
 
-            reuseProb = len(self.seriesDict) / avgSeries
+            seriesCount = len(self.seriesDict)
+            reuseProb = seriesCount / avgSeries
             if random.random() <= reuseProb:
-                reused = random.choice(list(self.seriesDict)[random.randint(0, len() )])
+                reused = random.sample(self.seriesDict, 1)[0]
                 return reused
 
             self.seriesDict.add(possibleName)
@@ -119,7 +120,7 @@ class ProgramsGenerator(BaseGenerator):
 
 
     def choose_rating(self): return 10 * random.random()
-    def choose_year(self): return 2000 + random.randint(0, 17)
+    def choose_year(self): return str(2000 + random.randint(0, 17))
 
     def choose_name(self):
         wordList = random_select_list(self.wordList,   minimum=2,  maximum=5)
