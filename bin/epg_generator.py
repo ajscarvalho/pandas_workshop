@@ -14,7 +14,7 @@ sys.path.insert(0, libdir)
 #parse arguments
 import argparse
 
-parser = argparse.ArgumentParser('''creates a list of random ids to identify customers, required to start the workshop''')
+parser = argparse.ArgumentParser('''creates a list of random programs for known channels, required to start the workshop''')
 parser.add_argument('-s', '--size',    metavar='Size',    type=str, default='10K', required=False,
     help='size of data set (1K = 1 Thousand lines) [10K]'
 )
@@ -25,28 +25,21 @@ arguments = vars(parser.parse_args()) # vars turns return into dict
 
 # getting arguments
 from helper.numbers import human_readable_int_to_machine
-def get_data_size(size):
-    size = size.upper()
-    multiplier = 1
-    if   size[-1] == 'K': multiplier = 1000
-    elif size[-1] == 'M': multiplier = 1000000
-    elif size[-1] == 'G': multiplier = 1000000000
-
-    if multiplier > 1: size = size[:-1]
-    size = int(size)
-    return size * multiplier
-
 
 size = human_readable_int_to_machine(arguments.get('size'))
-
-print ("Going to generate {} customers".format(size))
-
+print ("Going to generate {} programs".format(size))
 
 
-# generate customers file
 
-from data.generators.customer_base import CustomerGenerator
+from helper.words import get_words
+from data.generators.epg_programs import ProgramsGenerator
+#from data.access.tv_channels import TvChannelsCsvDao <- in events
 
-filename = os.path.join(dwhdir, 'customers')
-generator = CustomerGenerator(size)
+
+
+words = get_words(parentdir)
+
+filename = os.path.join(dwhdir, 'programs')
+#channelsDao = TvChannelsCsvDao().load()
+generator = ProgramsGenerator(words, size) #channelsDao, <- in events
 generator.run(filename)
