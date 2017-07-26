@@ -33,9 +33,11 @@ print ("Going to generate {} channels".format(size))
 
 
 # generate customers file
-
+from helper.words import get_words
 from data.generators.tv_channels import TvChannelsGenerator
 
+words = get_words(parentdir)
+
 filename = os.path.join(dwhdir, 'channels')
-generator = TvChannelsGenerator(size)
+generator = TvChannelsGenerator(words, size)
 generator.run(filename)
