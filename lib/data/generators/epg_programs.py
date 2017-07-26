@@ -32,9 +32,16 @@ class ProgramsGenerator(BaseGenerator):
         self.cache = {}
 
 
+    def get_initial_lines(self): 
+        return [
+            'ProgramId,ProgramType,IsLive,ProgramTitle,Genres,Actors,Directors,' + 
+            'Rating,Year,Description,SeriesId,SeriesSeason,SeriesEpisode'
+        ]
+
+
     def get_line(self):
         self.programIdGen +=1
-        progId          = "{:7d}".format(self.programIdGen)
+        progId          = "P_{:07d}".format(self.programIdGen)
         progType        = self.choose_program_type()
         progName        = self.generate_program_name(progType)
         progGenre       = self.choose_genres()

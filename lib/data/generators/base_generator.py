@@ -28,13 +28,16 @@ class BaseGenerator(object):
 
 
     def get_lines(self):
-        lines = []
+        lines = self.get_initial_lines()
         for i in range(self.BLOCK_SIZE):
             lines.append(self.get_line())
+            if self.terminate_lines_block(): break
 
         return lines
+
+    def terminate_lines_block(self): return False
 
     def get_line(self):
         pass
 
-
+    def get_initial_lines(self): return []
