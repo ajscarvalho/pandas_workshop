@@ -15,6 +15,8 @@ class EpgProgramsCsvDao(BaseCsvDao):
             'SeriesEpisode': str
         }
 
-        
+
+    def get_random_id(self):
+        return self.data.sample().iloc[0]['ProgramId']
 
 

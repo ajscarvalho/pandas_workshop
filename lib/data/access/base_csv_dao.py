@@ -29,13 +29,11 @@ class BaseCsvDao(object):
                 dtype=self.columnDataTypes)
 
             self.data.fillna(self.nanReplacement, inplace=True)
-            print (self.data.head(1))
+
         except:
             print ("File not found: ", filename)
 
         return self
-
-
 
 
     def __len__(self):

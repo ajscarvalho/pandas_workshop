@@ -10,13 +10,15 @@ dwhdir = os.path.join(parentdir, 'dwh')
 
 sys.path.insert(0, libdir)
 
+from datetime import datetime
+startTS = datetime.now()
 
 #parse arguments
 import argparse
 
 parser = argparse.ArgumentParser('''creates a list of random events for known channels and programs, required to start the workshop''')
 parser.add_argument('-s', '--size',    metavar='Size',    type=int, default=10, required=False,
-    help='number of days in EPG [10] (max: 30)'
+    help='number of days in EPG [10] (max: 29)'
 )
 
 arguments = vars(parser.parse_args()) # vars turns return into dict
@@ -40,3 +42,5 @@ channelsDao = TvChannelsCsvDao(dwhdir) .load()
 programsDao = EpgProgramsCsvDao(dwhdir).load()
 generator = EventsGenerator(channelsDao, programsDao, days)
 generator.run(filename)
+
+print("Process took {:6.3f} seconds".format( (datetime.now() - startTS).total_seconds()  ))

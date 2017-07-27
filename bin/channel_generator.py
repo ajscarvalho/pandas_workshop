@@ -15,8 +15,8 @@ sys.path.insert(0, libdir)
 import argparse
 
 parser = argparse.ArgumentParser('''creates a list of random TV Channels, required to start the workshop''')
-parser.add_argument('-s', '--size',    metavar='Size',    type=str, default='200', required=False,
-    help='size of data set (1K = 1 Thousand lines) [200]'
+parser.add_argument('-s', '--size',    metavar='Size',    type=str, default='100', required=False,
+    help='size of data set (1K = 1 Thousand lines) [100]'
 )
 
 arguments = vars(parser.parse_args()) # vars turns return into dict
