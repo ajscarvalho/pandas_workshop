@@ -16,7 +16,7 @@ import argparse
 
 parser = argparse.ArgumentParser('''creates a random log file to start the workshop''')
 parser.add_argument('-r', '--rubbish', metavar='Rubbish', type=int, default=90   , required=False,
-    help='percentage of rubbish in log file (default: 90)'
+    help='percentage of rubbish in log file [90]'
 )
 parser.add_argument('-s', '--size',    metavar='Size',    type=str, default='10M', required=False,
     help='aproximate size of data set (1M = 1 Million lines) [10M]'
@@ -46,8 +46,13 @@ size = get_log_file_size(arguments.get('size'))
 
 # generate log file
 
-from data.generators.logfile import LogFileGenerator
+from data.generators.logfile    import LogFileGenerator
+from data.access.users          import UsersCsvDao
+from data.access.epg_events     import EpgEventsCsvDao
 
-generator = LogFileGenerator(size, rubbish)
+eventsDao   = EpgEventsCsvDao(dwhdir)   .load()
+usersDao    = UsersCsvDao(dwhdir)       .load()
+
+generator = LogFileGenerator(users, events, size, rubbish)
 filename = os.path.join(dwhdir, 'activity')
 generator.run()
