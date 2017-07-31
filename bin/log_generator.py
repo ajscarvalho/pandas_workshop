@@ -11,15 +11,21 @@ dwhdir = os.path.join(parentdir, 'dwh')
 sys.path.insert(0, libdir)
 
 
+from datetime import datetime
+
+startDT = datetime.now()
+
+
 #parse arguments
 import argparse
 
+
 parser = argparse.ArgumentParser('''creates a random log file to start the workshop''')
-parser.add_argument('-r', '--rubbish', metavar='Rubbish', type=int, default=90   , required=False,
-    help='percentage of rubbish in log file [90]'
+parser.add_argument('-r', '--rubbish', metavar='Rubbish', type=int, default=20   , required=False,
+    help='percentage of rubbish in log file [20]'
 )
-parser.add_argument('-s', '--size',    metavar='Size',    type=str, default='10M', required=False,
-    help='aproximate size of data set (1M = 1 Million lines) [10M]'
+parser.add_argument('-s', '--size',    metavar='Size',    type=str, default='3M', required=False,
+    help='aproximate size of data set (1M = 1 Million lines) [3M]'
 )
 
 arguments = vars(parser.parse_args()) # vars turns return into dict
@@ -49,10 +55,15 @@ size = get_log_file_size(arguments.get('size'))
 from data.generators.logfile    import LogFileGenerator
 from data.access.users          import UsersCsvDao
 from data.access.epg_events     import EpgEventsCsvDao
+from helper.words               import get_words
 
 eventsDao   = EpgEventsCsvDao(dwhdir)   .load()
 usersDao    = UsersCsvDao(dwhdir)       .load()
+words       = get_words(parentdir)
 
-generator = LogFileGenerator(users, events, size, rubbish)
+generator = LogFileGenerator(usersDao, eventsDao, words, size, rubbish)
 filename = os.path.join(dwhdir, 'activity')
-generator.run()
+generator.run(filename)
+
+
+print("Process Ended after {}s".format((datetime.now()-startDT).total_seconds()))

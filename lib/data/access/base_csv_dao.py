@@ -30,8 +30,9 @@ class BaseCsvDao(object):
 
             self.data.fillna(self.nanReplacement, inplace=True)
 
-        except:
+        except Exception as e:
             print ("File not found: ", filename)
+            raise e
 
         return self
 
