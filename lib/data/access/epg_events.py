@@ -55,7 +55,7 @@ class EpgEventsCsvDao(BaseCsvDao):
     # @record   00:10   00:15   Out
     def select_time_frame(self, startDate):
         """consider always a 5m period and always aligned to 5m intervals"""
-        print ("Changing TimeFrame to ", startDate)
+#        print ("Changing TimeFrame to ", startDate)
         filtered = self.data[(self.data['StartDate'] <= startDate) & (startDate < self.data['EndDate']) ].copy()
         self.currentTimeFrame = filtered.set_index("ChannelId", drop=False).copy()
         self.eventCache = {}
@@ -83,10 +83,8 @@ class EpgEventsCsvDao(BaseCsvDao):
 
     #@mass_profiler
     def get_random_event(self):
-        #channelPos = math.floor(random.expovariate(self.exponentialVariateLambdaValue) )
-        #channelPos = math.floor(np.random.exponential(self.exponentialVariateLambdaValue, self.dataSize) )
-        #channelId = self.channels[channelPos]
         channelId = self.get_random_channel()
+
         #cache
         cachedEvent = self.eventCache.get(channelId)
         if cachedEvent is not None: return cachedEvent

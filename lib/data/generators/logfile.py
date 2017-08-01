@@ -13,6 +13,7 @@ from helper.random_select import random_select_list
 class LogFileGenerator(BaseGenerator):
 
     def __init__(self, usersDao, eventsDao, wordList, size, rubbish):
+
         self.usersDao   = usersDao
         self.eventsDao  = eventsDao
         self.wordList   = wordList
@@ -20,6 +21,8 @@ class LogFileGenerator(BaseGenerator):
         self.rubbish    = rubbish
         self.recordCount = size / (1-rubbish)
         self.size = self.recordCount
+
+        super(LogFileGenerator, self).__init__(self.size)
 
         print ("Generating", self.recordCount, "Records")
 
