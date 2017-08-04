@@ -33,7 +33,7 @@ class UsersCsvDao(BaseCsvDao):
         self.dataSize = self.data.shape[0] # 10K
         setSample = self.dataSize * 0.2
 
-        self.exponentialVariateLambdaValue = 1 / setSample
+        self.exponentialVariateLambdaValue = setSample / 2
 
         self.generate_randomized_users()
         return self
@@ -43,24 +43,17 @@ class UsersCsvDao(BaseCsvDao):
     def generate_randomized_users(self):
         random_values = np.random.exponential(self.exponentialVariateLambdaValue, self.RANDOM_BLOCK_SIZE)
         floored = [math.floor(r) for r in random_values]
-        self.randomizedUsers = [ str( self.data.iloc[pos][0] ) for pos in floored]
+        self.randomizedUsers = [ self.select_user_at_pos(pos) for pos in floored]
         self.userPointer = 0
 
-    
-    # @time_profiler
-    # def randomize_users(self):
-    #     self.randomizedUsers = []
-    #     for i in range(1000):
-    #         self.randomizedUsers.append(self.fetch_random_user())
 
+    def select_user_at_pos(self, pos):
+        size = len(self.data)
+        if pos >= size:
+            #print('Offlimits', pos, 'in', size)
+            pos = np.random.randint(0, size - 1)
 
-    # @mass_profiler
-    # def fetch_random_user(self): 
-    #     pos = math.floor(random.expovariate(self.exponentialVariateLambdaValue) )
-    #     pos = min(pos, self.dataSize-1)
-    #     #print('User', pos, type(self.data.iloc[pos]), self.data.iloc[pos], "\nA:", str(self.data.iloc[pos][0]))
-    #     return str(self.data.iloc[pos][0])
-    #     #return self.data.iloc[pos] 'UserId']
+        return str( self.data.iloc[pos][0] )
 
 
 #    @mass_profiler

@@ -24,8 +24,8 @@ parser = argparse.ArgumentParser('''creates a random log file to start the works
 parser.add_argument('-r', '--rubbish', metavar='Rubbish', type=int, default=20   , required=False,
     help='percentage of rubbish in log file [20]'
 )
-parser.add_argument('-s', '--size',    metavar='Size',    type=str, default='3M', required=False,
-    help='aproximate size of data set (1M = 1 Million lines) [3M]'
+parser.add_argument('-s', '--size',    metavar='Size',    type=str, default='1M', required=False,
+    help='aproximate size of data set (1M = 1 Million lines) [1M]'
 )
 
 arguments = vars(parser.parse_args()) # vars turns return into dict

@@ -32,13 +32,13 @@ class LogFileGenerator(BaseGenerator):
         self.GOOD_EVENT = 'ChangeChannel'
         self.OTHER_EVENT_TYPES = ['TimeWarp', 'VOD', 'StbOn', 'StbOff', 'HDMI_On', 'HDMI_Off', 'Garbage']
         self.EVENT_TEMPLATES = {
-            'ChangeChannel' : '{timestamp}:{garbage1} User@{user}: {eventName}({channelId}, {eventId}, {fakeId}) {garbage2}',
-            'TimeWarp'      : '{timestamp}:{garbage1} User@{user}: {eventName}({fakeId}) {garbage2}',
-            'VOD'           : '{timestamp}:{garbage1} User@{user}: {eventName}({fakeId}) {garbage2}',
-            'StbOn'         : '{timestamp}:{garbage1} User@{user}: {eventName}({fakeId}) {garbage2}',
-            'StbOff'        : '{timestamp}:{garbage1} User@{user}: {eventName}({fakeId}) {garbage2}',
-            'HDMI_On'       : '{timestamp}:{garbage1} User@{user}: {eventName}({fakeId}) {garbage2}',
-            'HDMI_Off'      : '{timestamp}:{garbage1} User@{user}: {eventName}({fakeId}) {garbage2}',
+            'ChangeChannel' : '{timestamp}:{garbage1} User@{user}: UserAction={eventName}({channelId}, {eventId}, {fakeId}) {garbage2}',
+            'TimeWarp'      : '{timestamp}:{garbage1} User@{user}: UserAction={eventName}({fakeId}) {garbage2}',
+            'VOD'           : '{timestamp}:{garbage1} User@{user}: UserAction={eventName}({fakeId}) {garbage2}',
+            'StbOn'         : '{timestamp}:{garbage1} User@{user}: UserAction={eventName}({fakeId}) {garbage2}',
+            'StbOff'        : '{timestamp}:{garbage1} User@{user}: UserAction={eventName}({fakeId}) {garbage2}',
+            'HDMI_On'       : '{timestamp}:{garbage1} User@{user}: UserAction={eventName}({fakeId}) {garbage2}',
+            'HDMI_Off'      : '{timestamp}:{garbage1} User@{user}: UserAction={eventName}({fakeId}) {garbage2}',
             'Garbage'       : '{timestamp}:{garbage1} {fakeId} {garbage2}',
         }
 
@@ -61,8 +61,8 @@ class LogFileGenerator(BaseGenerator):
 
         eventName = self.GOOD_EVENT if good else random.choice(self.OTHER_EVENT_TYPES)
         timestamp = self.get_timestamp()
-        garbage1  = self.get_garbage(['.'], 5)
-        garbage2  = self.get_garbage(['., :;+-*/&%$#@!_'], 3)
+        garbage1  = self.get_garbage('.', 5)
+        garbage2  = self.get_garbage('., :;+-*/&%$#@!_', 3)
         fakeId    = self.get_fake_id(eventName, '.-:/_', 4, 8)
         user = self.usersDao.get_random_user()
     
@@ -70,7 +70,7 @@ class LogFileGenerator(BaseGenerator):
         line = self.EVENT_TEMPLATES[eventName]
         line = line.replace('{timestamp}', timestamp)
         line = line.replace('{user}', user)
-        line = line.replace('{eventName}', user)
+        line = line.replace('{eventName}', eventName)
 
         line = line.replace('{garbage1}', garbage1)
         line = line.replace('{garbage2}', garbage2)

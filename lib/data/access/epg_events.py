@@ -38,7 +38,7 @@ class EpgEventsCsvDao(BaseCsvDao):
         self.dataSize = self.channels.shape[0] # 100? 200?
         setSample = self.dataSize * 0.1 # 10% 
 
-        self.exponentialVariateLambdaValue = 1 / setSample
+        self.exponentialVariateLambdaValue = setSample / 2
 
         self.generate_randomized_channels()
 
@@ -66,8 +66,17 @@ class EpgEventsCsvDao(BaseCsvDao):
     def generate_randomized_channels(self):
         random_values = np.random.exponential(self.exponentialVariateLambdaValue, self.RANDOM_BLOCK_SIZE)
         floored = [math.floor(r) for r in random_values]
-        self.randomizedChannels = [ str( self.channels[pos] ) for pos in floored]
+        self.randomizedChannels = [ self.select_channel_at_pos(pos) for pos in floored]
         self.channelPointer = 0
+
+
+    def select_channel_at_pos(self, pos):
+        size = len(self.channels)
+        if pos >= size:
+            #print('Offlimits', pos, 'in', size)
+            pos = np.random.randint(0, size - 1)
+
+        return str( self.channels[pos] )
 
 
     #@mass_profiler
