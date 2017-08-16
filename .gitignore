@@ -3,3 +3,5 @@ pandas_worshop_env
 dwh
 *.swp
 *.pyc
+activate.bat
+.ipynb_*
